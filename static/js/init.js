@@ -81,11 +81,11 @@ window.addEventListener('pageshow', clearFreshComposerRestore);
 {
   const KEY = Storage.KEYS.SIDEBAR_COLLAPSED;
   const saved = Storage.getJSON(KEY, {});
-  const _defaultCollapsed = { 'sessions-section': true };
+  const _defaultCollapsed = { 'sessions-section': true, 'models-section': true, 'tools-section': true };
   document.querySelectorAll('.sidebar .section').forEach((section) => {
     const id = section.id;
     if (!id) return;
-    const shouldCollapse = (id in saved) ? saved[id] : !!_defaultCollapsed[id];
+    const shouldCollapse = (window.innerWidth >= 769) ? true : ((id in saved) ? saved[id] : !!_defaultCollapsed[id]);
     if (shouldCollapse) section.classList.add('collapsed');
   });
   // Sessions-section notification dot: clear when the section becomes
@@ -403,3 +403,69 @@ window.addEventListener('pageshow', clearFreshComposerRestore);
   else window.addEventListener('load', release);
   setTimeout(release, 1200);  // hard fallback — never leave the splash hidden
 })();
+
+// Intercept external links inside Tauri to open in default system browser
+document.addEventListener('click', (e) => {
+  const isTauri = typeof window !== 'undefined' && (window.__TAURI__ || window.__TAURI_INTERNALS__);
+  if (!isTauri) return;
+
+  const anchor = e.target.closest('a');
+  if (anchor && anchor.href) {
+    const url = anchor.href;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      e.preventDefault();
+      try {
+        if (window.__TAURI__ && window.__TAURI__.core && typeof window.__TAURI__.core.invoke === 'function') {
+          window.__TAURI__.core.invoke('open_in_browser', { url });
+        }
+      } catch (err) {
+        console.error('Failed to open external link in Tauri:', err);
+      }
+    }
+  }
+});
+
+// Mock HTML5 Notification API for Tauri to use native system notifications
+if (typeof window !== 'undefined' && (window.__TAURI__ || window.__TAURI_INTERNALS__)) {
+  class TauriNotification {
+    static permission = 'granted';
+    
+    static requestPermission(callback) {
+      const p = Promise.resolve('granted');
+      if (typeof callback === 'function') callback('granted');
+      return p;
+    }
+
+    constructor(title, options) {
+      this.title = title;
+      this.body = (options && options.body) || '';
+      this.tag = (options && options.tag) || '';
+      
+      try {
+        if (window.__TAURI__ && window.__TAURI__.core && typeof window.__TAURI__.core.invoke === 'function') {
+          window.__TAURI__.core.invoke('send_notification', { 
+            title: this.title, 
+            body: this.body 
+          });
+        }
+      } catch (err) {
+        console.error('Failed to show notification in Tauri:', err);
+      }
+      
+      if (options && typeof options.onclick === 'function') {
+        this.onclick = options.onclick;
+      }
+      
+      setTimeout(() => {
+        if (typeof this.onshow === 'function') this.onshow();
+      }, 100);
+    }
+
+    close() {
+      if (typeof this.onclose === 'function') this.onclose();
+    }
+  }
+
+  window.Notification = TauriNotification;
+}
+

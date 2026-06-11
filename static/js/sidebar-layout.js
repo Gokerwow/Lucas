@@ -474,6 +474,23 @@ export function initSidebarLayout(Storage, opts) {
     _modalObs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
   }
 
+  // Close navbar dropdowns when clicking outside or selecting a dropdown item on desktop
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth < 769) return; // Only on desktop
+    const clickedSection = e.target.closest('.sidebar .section');
+    document.querySelectorAll('.sidebar .section').forEach(s => {
+      if (s !== clickedSection) {
+        s.classList.add('collapsed');
+      }
+    });
+    // If clicking a list-item or sidebar action button, close the dropdown
+    if (clickedSection && e.target.closest('.list-item, .sidebar-action-icon, button')) {
+      setTimeout(() => {
+        clickedSection.classList.add('collapsed');
+      }, 150);
+    }
+  }, { capture: true });
+
   // (Mobile swipe-to-open-sidebar is wired at MODULE scope — see
   // _initChatSwipeToOpenSidebar() at the bottom of this file — so it attaches
   // independently of this init function completing.)

@@ -118,9 +118,9 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
                 f"script-src 'self' 'nonce-{nonce}' https://cdn.jsdelivr.net; "
                 "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
                 "font-src 'self' https://cdn.jsdelivr.net; "
-                "img-src 'self' data: blob:; "
-                "media-src 'self' blob:; "
-                "connect-src 'self'; "
+                "img-src 'self' data: blob: https: http:; "
+                "media-src 'self' blob: https: http:; "
+                "connect-src 'self' https: http: ws: wss:; "
                 "frame-src 'self'; "
                 "frame-ancestors 'none'"
             )

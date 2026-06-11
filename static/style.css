@@ -14902,15 +14902,16 @@ body:has(.doc-version-panel:not(.hidden)) .hamburger-btn {
   body.email-doc-split-active .modal[id^="email-reader-"].modal-left-docked:not(.modal-dragging) .modal-content {
     position: absolute !important;
     left: 0 !important;
-    top: 0 !important;
+    top: 76px !important;
     bottom: 0 !important;
     right: auto !important;
     width: var(--email-doc-split-email-w, 420px) !important;
     max-width: var(--email-doc-split-email-w, 420px) !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
+    height: calc(100vh - 76px) !important;
+    max-height: calc(100vh - 76px) !important;
     transform: none !important;
     margin: 0 !important;
+    transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
   }
   body.email-doc-split-active.doc-view .doc-divider {
     display: none !important;
@@ -14919,15 +14920,29 @@ body:has(.doc-version-panel:not(.hidden)) .hamburger-btn {
     position: fixed !important;
     left: var(--email-doc-split-right-x, 420px) !important;
     right: var(--right-dock-w, 0px) !important;
-    top: 0 !important;
+    top: 76px !important;
     bottom: 0 !important;
     width: auto !important;
     max-width: none !important;
-    height: 100vh !important;
+    height: calc(100vh - 76px) !important;
     z-index: 260 !important;
     margin-top: 0 !important;
     transform: none !important;
     border-left: none !important;
+    transition: top 0.25s ease, height 0.25s ease, left 0.25s ease, right 0.25s ease !important;
+  }
+
+  body.sidebar-collapsed.email-doc-split-active #email-lib-modal.email-snap-left:not(.modal-dragging) .modal-content,
+  body.sidebar-collapsed.email-doc-split-active #email-lib-modal.modal-left-docked:not(.modal-dragging) .modal-content,
+  body.sidebar-collapsed.email-doc-split-active .modal[id^="email-reader-"].email-snap-left:not(.modal-dragging) .modal-content,
+  body.sidebar-collapsed.email-doc-split-active .modal[id^="email-reader-"].modal-left-docked:not(.modal-dragging) .modal-content {
+    top: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+  body.sidebar-collapsed.email-doc-split-active.doc-view .doc-editor-pane {
+    top: 0 !important;
+    height: 100vh !important;
   }
 }
 
@@ -36612,3 +36627,361 @@ body.theme-frosted .modal {
    the input beside it (.confirm-btn won't stretch on its own). */
 .ask-user-other-send { flex-shrink: 0; white-space: nowrap; min-height: 39px; }
 .ask-user-other-send:disabled { opacity: 0.5; cursor: default; }
+
+/* ==========================================================================
+   Floating Navbar & Chat Width Overrides (Desktop: min-width: 769px)
+   ========================================================================== */
+@media (min-width: 769px) {
+  /* 1. Floating Navbar styles */
+  .sidebar {
+    position: fixed !important;
+    top: 12px !important;
+    left: 50% !important;
+    transform: translate(-50%, 0) !important;
+    width: calc(100% - 24px) !important;
+    max-width: 1000px !important;
+    height: 52px !important;
+    border-radius: 12px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 16px 0 48px !important; /* Left padding makes room for floating hamburger */
+    z-index: 1000 !important;
+    background: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 80%, transparent) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    overflow: visible !important;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease !important;
+  }
+
+  /* When collapsed, slide out upwards */
+  .sidebar.hidden {
+    top: 12px !important;
+    opacity: 0 !important;
+    width: calc(100% - 24px) !important;
+    transform: translate(-50%, -80px) !important;
+    border: none !important;
+  }
+
+  .sidebar-resize-handle {
+    display: none !important;
+  }
+
+  .sidebar-header {
+    padding: 0 !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 12px !important;
+  }
+
+  .sidebar-brand {
+    min-height: 0 !important;
+  }
+
+  .sidebar-brand-title {
+    left: 0 !important;
+    font-size: 1.1rem !important;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4) !important;
+  }
+
+  .sidebar-inner {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    scrollbar-width: none !important;
+    margin: 0 !important;
+    height: 100% !important;
+  }
+  .sidebar-inner::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #sidebar-new-chat-btn,
+  #sidebar-search-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border) !important;
+    background: color-mix(in srgb, var(--fg) 3%, transparent) !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: all 0.15s ease !important;
+  }
+
+  #sidebar-new-chat-btn:hover,
+  #sidebar-search-btn:hover {
+    background: color-mix(in srgb, var(--fg) 8%, transparent) !important;
+    border-color: var(--fg) !important;
+  }
+
+  #sidebar-new-chat-btn .grow,
+  #sidebar-search-btn .grow {
+    font-size: 11px !important;
+    font-weight: 500 !important;
+  }
+
+  /* 2. Dropdown behavior for Sections */
+  .sidebar .section {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .sidebar .section-header-flex {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border) !important;
+    background: color-mix(in srgb, var(--fg) 3%, transparent) !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: all 0.15s ease !important;
+    margin: 0 !important;
+    height: 30px !important;
+  }
+
+  .sidebar .section-header-flex:hover {
+    background: color-mix(in srgb, var(--fg) 8%, transparent) !important;
+    border-color: var(--fg) !important;
+  }
+
+  .sidebar .section-title {
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    color: var(--fg) !important;
+  }
+
+  .sidebar .section-collapse-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+  }
+
+  .sidebar .section-collapse-btn:hover {
+    opacity: 1 !important;
+  }
+
+  /* The actual section lists behave as absolute dropdown containers */
+  .sidebar .section-dropdown-content {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 95%, transparent) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    width: 280px !important;
+    max-height: 380px !important;
+    overflow-y: auto !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(20px) !important;
+    z-index: 1010 !important;
+    padding: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+
+  .sidebar .section.collapsed .section-dropdown-content {
+    display: none !important;
+  }
+
+  /* Align dropdown positions */
+  .sidebar #sessions-section .section-dropdown-content {
+    left: 0 !important;
+    transform: none !important;
+  }
+
+  .sidebar #tools-section .section-dropdown-content {
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    scrollbar-width: none !important;
+  }
+  .sidebar #tools-section .section-dropdown-content::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .sidebar-user-bar {
+    padding: 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .user-bar-left {
+    padding: 4px 8px !important;
+  }
+
+  /* Hide vertical rail on desktop */
+  .icon-rail {
+    display: none !important;
+  }
+
+  /* 3. Hamburger Button Positioning */
+  .hamburger-btn {
+    position: fixed !important;
+    top: 23px !important;
+    left: calc(50% - min(500px, 50vw - 12px) + 12px) !important;
+    z-index: 1010 !important;
+    opacity: 0.6 !important;
+    display: flex !important;
+    transition: all 0.25s ease !important;
+  }
+
+  body.sidebar-collapsed .hamburger-btn {
+    left: 16px !important;
+    top: 16px !important;
+    background: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 85%, transparent) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    opacity: 0.8 !important;
+  }
+
+  /* 4. Chat Area Layout adjustments */
+  .chat-container {
+    margin-top: 76px !important;
+    transition: margin-top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), margin-left 160ms ease, margin-right 160ms ease !important;
+  }
+
+  /* 5. Modal centering updates */
+  #calendar-modal,
+  #gallery-modal,
+  #tasks-modal,
+  #memory-modal,
+  #doclib-modal,
+  #compare-model-overlay,
+  #research-overlay,
+  #theme-modal,
+  #settings-modal,
+  #email-lib-modal {
+    left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    transition: left 0.25s ease, width 0.25s ease !important;
+  }
+
+  /* Fullscreen positioning fixes */
+  #doclib-modal.doclib-fullscreen:not(.modal-right-docked) .doclib-modal-content,
+  body:not(.email-doc-split-active) #email-lib-modal.email-lib-fullscreen:not(.modal-right-docked) .modal-content {
+    left: 0 !important;
+  }
+
+  /* 6. Push docked modals, notes pane, and document pane below top navbar */
+  .modal.modal-left-docked,
+  .modal.modal-right-docked {
+    top: 76px !important;
+    height: calc(100vh - 76px) !important;
+    transition: top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+  .modal.modal-left-docked .modal-content,
+  .modal.modal-right-docked .modal-content,
+  .modal.modal-left-docked .doclib-modal-content,
+  .modal.modal-right-docked .doclib-modal-content {
+    height: 100% !important;
+    max-height: 100% !important;
+    transition: top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), max-height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .notes-pane.modal-left-docked,
+  .notes-pane.modal-right-docked {
+    top: 76px !important;
+    height: calc(100vh - 76px) !important;
+    max-height: calc(100vh - 76px) !important;
+    transition: top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), max-height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .doc-editor-pane {
+    margin-top: 76px !important;
+    height: calc(100vh - 76px) !important;
+    transition: margin-top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), left 0.25s ease, right 0.25s ease !important;
+  }
+
+  .doc-divider {
+    margin-top: 76px !important;
+    transition: margin-top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .doc-version-panel {
+    top: 76px !important;
+    height: calc(100vh - 76px) !important;
+    transition: top 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  /* 7. Align elements when the top navbar is collapsed/toggled off */
+  body.sidebar-collapsed .chat-container {
+    margin-top: 12px !important;
+  }
+
+  body.sidebar-collapsed .modal.modal-left-docked,
+  body.sidebar-collapsed .modal.modal-right-docked {
+    top: 0 !important;
+    height: 100vh !important;
+  }
+
+  body.sidebar-collapsed .notes-pane.modal-left-docked,
+  body.sidebar-collapsed .notes-pane.modal-right-docked {
+    top: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  body.sidebar-collapsed .doc-editor-pane {
+    margin-top: 0 !important;
+    top: 0 !important;
+    height: 100vh !important;
+  }
+
+  body.sidebar-collapsed .doc-divider {
+    margin-top: 0 !important;
+  }
+
+  body.sidebar-collapsed .doc-version-panel {
+    top: 0 !important;
+    height: 100vh !important;
+  }
+}
+
+/* 6. Chat width overrides (both global and welcome screen) */
+.chat-history {
+  --chat-max: 1000px !important;
+}
+
+.chat-input-bar {
+  max-width: 1000px !important;
+}
+
+.chat-container.welcome-active .chat-input-bar {
+  max-width: 1000px !important;
+}
+

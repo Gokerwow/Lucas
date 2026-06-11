@@ -233,14 +233,18 @@ function _applyEmailDocSplitGeometry(left, emailWidth) {
   // geometry too, otherwise the email resizes but the document stays put.
   const docPane = document.getElementById('doc-editor-pane');
   if (!docPane || window.innerWidth <= 768) return;
+  const isDesktop = window.innerWidth > 768;
+  const sidebar = document.getElementById('sidebar');
+  const isSidebarVisible = sidebar && !sidebar.classList.contains('hidden');
+  const showOffset = isDesktop && isSidebarVisible;
   docPane.style.setProperty('position', 'fixed', 'important');
   docPane.style.setProperty('left', `${x}px`, 'important');
   docPane.style.setProperty('right', 'var(--right-dock-w, 0px)', 'important');
-  docPane.style.setProperty('top', '0px', 'important');
+  docPane.style.setProperty('top', showOffset ? '76px' : '0px', 'important');
   docPane.style.setProperty('bottom', '0px', 'important');
   docPane.style.setProperty('width', 'auto', 'important');
   docPane.style.setProperty('max-width', 'none', 'important');
-  docPane.style.setProperty('height', '100vh', 'important');
+  docPane.style.setProperty('height', showOffset ? 'calc(100vh - 76px)' : '100vh', 'important');
   docPane.style.setProperty('z-index', '260', 'important');
   docPane.style.setProperty('transform', 'none', 'important');
 }
@@ -392,11 +396,15 @@ function _applyDockInternal(modal, side, dockClass) {
     };
   }
   modal.classList.add(dockClass);
+  const isDesktop = window.innerWidth > 768;
+  const sidebar = document.getElementById('sidebar');
+  const isSidebarVisible = sidebar && !sidebar.classList.contains('hidden');
+  const showOffset = isDesktop && isSidebarVisible;
   content.style.position = 'fixed';
-  content.style.top = '0';
+  content.style.top = showOffset ? '76px' : '0';
   content.style.bottom = '0';
-  content.style.height = '100vh';
-  content.style.maxHeight = '100vh';
+  content.style.height = showOffset ? 'calc(100vh - 76px)' : '100vh';
+  content.style.maxHeight = showOffset ? 'calc(100vh - 76px)' : '100vh';
   content.style.borderRadius = '0';
   content.style.transform = 'none';
   content.style.margin = '0';

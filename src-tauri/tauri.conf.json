@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Lucas",
+  "version": "0.1.0",
+  "identifier": "com.lucas.chat",
+  "build": {
+    "frontendDist": "http://localhost:7000",
+    "devUrl": "http://localhost:7000",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Lucas",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' customprotocol: tauri: http://localhost:* ws://localhost:* https://localhost:* wss://localhost:*; img-src 'self' customprotocol: tauri: data: blob: http://localhost:* https: http:; media-src 'self' customprotocol: tauri: data: blob: http://localhost:* https: http:; connect-src 'self' customprotocol: tauri: http://localhost:* ws://localhost:* https://localhost:* wss://localhost:*;"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "android": {
+      "debugApplicationIdSuffix": ".debug"
+    }
+  }
+}
