@@ -16,56 +16,56 @@
  */
 
 :root {
-  /* Core palette */
-  --bg: #282c34;
-  --fg: #9cdef2;
-  --panel: #111;
-  --border: #355a66;
-  --red: #e06c75;
+  /* Core palette — Jarvis Tech Workspace Theme */
+  --bg: #07090e;                                   /* Deep galactic tech-black */
+  --fg: #a8ebff;                                   /* Glowing neon cyber-cyan text */
+  --panel: rgba(13, 20, 35, 0.75);                 /* Translucent tech-blue HUD panels */
+  --border: rgba(0, 240, 255, 0.2);                /* Tech-cyan glowing thin borders */
+  --red: #00f0ff;                                  /* Neon cyan accent color */
   /* Were `var(--green)` / `var(--warn)` — self-referential, so they
      resolved to invalid and every site fell back to its own literal
      (or, for sites with no fallback, painted as transparent/inherit).
      Anchor them to real hex so the token layer actually works. */
-  --green: #50fa7b;
-  --warn: #f0ad4e;
+  --green: #00ffcc;
+  --warn: #ffcc00;
 
   /* Syntax highlighting */
-  --hl-bg: #1e2228;
-  --hl-fg: #9cdef2;
-  --hl-keyword: #c678dd;
-  --hl-string: #e5c07b;
-  --hl-comment: #828997;
-  --hl-function: #61afef;
-  --hl-number: #d19a66;
-  --hl-builtin: #56b6c2;
-  --hl-variable: #abb2bf;
-  --hl-params: #a8c0d4;
+  --hl-bg: #0b111e;
+  --hl-fg: #a8ebff;
+  --hl-keyword: #00f0ff;
+  --hl-string: #00ffcc;
+  --hl-comment: #4e6b8c;
+  --hl-function: #33b3ff;
+  --hl-number: #ff8c00;
+  --hl-builtin: #00ffaa;
+  --hl-variable: #a8ebff;
+  --hl-params: #78a9ff;
 
   /* Semantic colors */
-  --color-error: #ff4444;
-  --color-error-light: #ff6666;
-  --color-success: #4caf50;
-  --color-warning: #f0ad4e;
-  --color-danger: #c0392b;
-  --color-recording: #ff3b30;
-  --color-recording-hover: #d63031;
-  --color-muted: #888;
-  --color-muted-alt: #6b7280;
-  --color-accent: #00aaff;
-  --color-agent-active: #00ff00;
-  --color-brand-blue: #3b82f6;
-  --color-blind-orange: #ff9800;
+  --color-error: #ff3366;
+  --color-error-light: #ff6688;
+  --color-success: #00ffcc;
+  --color-warning: #ffcc00;
+  --color-danger: #ff3366;
+  --color-recording: #ff3366;
+  --color-recording-hover: #ff0044;
+  --color-muted: #577b9f;
+  --color-muted-alt: #466585;
+  --color-accent: #00f0ff;
+  --color-agent-active: #00ffcc;
+  --color-brand-blue: #00a2ff;
+  --color-blind-orange: #ffaa00;
   --color-save-green: var(--color-success);
-  --color-link-hover: #66c7ff;
-  --color-subheader: #6b8a94;
-  --select-bg: var(--bg);
+  --color-link-hover: #ffffff;
+  --color-subheader: #6ea4cb;
+  --select-bg: #0b111e;
   --select-fg: var(--fg);
-  --select-option-bg: color-mix(in srgb, var(--panel) 74%, var(--bg));
+  --select-option-bg: #0d121f;
   --select-option-fg: var(--fg);
-  --select-option-active-bg: color-mix(in srgb, var(--accent, var(--red)) 24%, var(--panel));
+  --select-option-active-bg: rgba(0, 240, 255, 0.2);
   /* Warm accent — used by the Goals/Today UI in Notes. Lives as a token so
      themes can override without touching the goal CSS. */
-  --accent-warm: #d19a66;
+  --accent-warm: #ffaa00;
 }
 
 :root.light {
@@ -102,7 +102,7 @@ body {
      below so left + right docks can coexist without skewing the whole body. */
   transition: padding-left 160ms cubic-bezier(0.22, 0.61, 0.36, 1),
               padding-right 160ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  font-family: var(--font-family, 'Fira Code', monospace);
+  font-family: var(--font-family, 'Inter', system-ui, -apple-system, sans-serif);
   display: flex;
   height: 100%;
   height: 100dvh; /* dynamic viewport height — adapts when mobile keyboard opens */
@@ -116,6 +116,7 @@ body {
 
 /* Code block baseline */
 pre, code, .hljs {
+  font-family: 'Fira Code', monospace;
   font-size: 0.95em;
   line-height: 1.5;
 }
@@ -561,8 +562,8 @@ body.bg-pattern-sparkles {
       min-height: 24px;
     }
     .sidebar-brand-title {
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.35rem;
+      font-weight: 700;
       line-height: 1.35;
       color: var(--brand-color, var(--red));
       white-space: nowrap;
@@ -570,6 +571,9 @@ body.bg-pattern-sparkles {
       position: relative;
       top: 0;
       left: -10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
     }
     .sidebar-sep {
       display: none;
@@ -1150,12 +1154,12 @@ body.bg-pattern-sparkles {
       flex: 1; cursor: pointer; user-select: none;
       display: flex; align-items: center; gap: 6px;
       margin: 0; padding: 0; border: none;
-      font-size: 10px; font-weight: 400; font-family: inherit;
+      font-size: 11px; font-weight: 600; font-family: inherit;
       /* 1.3 (not 1) so Fira Code's tall glyph box isn't vertically clipped in
          Chromium/Edge — mirrors the .list-item fix. The title is flex-centred
          in a fixed-height (29px) header, so this adds headroom without reflow. */
-      line-height: 1.3; letter-spacing: 0; text-transform: none;
-      color: var(--fg);
+      line-height: 1.3; letter-spacing: 0.08em; text-transform: uppercase;
+      color: color-mix(in srgb, var(--fg) 70%, transparent);
     }
     .section-icon,
     .sidebar-action-icon {
@@ -1714,7 +1718,9 @@ body.bg-pattern-sparkles {
     }
     .list-item span {
       color: var(--fg);
-      font-size: 9.75px;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
     .grow {
       flex: 1;

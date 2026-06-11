@@ -1,13 +1,6 @@
-// static/sw.js — Odysseus PWA Service Worker
-// Strategy:
-//   - HTML (navigation): stale-while-revalidate. Instant open from cache,
-//     background refresh so the next open has latest HTML.
-//   - JS/CSS (/static/*.js|.css): network-first, cache fallback for offline.
-//     (So code/style edits show up on a normal reload, no manual cache clear.)
-//   - Other static assets (images/fonts/libs): cache-first with bg refresh.
-//   - API / non-GET: never cached.
+// static/sw.js — Lucas PWA Service Worker
 // Bump CACHE_NAME whenever the precache list or SW logic changes.
-const CACHE_NAME = 'odysseus-v327';
+const CACHE_NAME = 'lucas-v100';
 
 // Core shell precached on install so repeat opens are instant without any
 // network wait. Keep this list in sync with the <script type="module"> tags
